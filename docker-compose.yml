@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+  standup-saboteur-vue:
+    build: .
+    container_name: standup-saboteur-vue
+    restart: always
+    ports:
+      - '80:80'
