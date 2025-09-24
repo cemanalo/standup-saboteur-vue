@@ -5,7 +5,14 @@
 
     <!-- Rule Illustration -->
     <div class="bg-white shadow-lg rounded-lg p-6 mb-8 max-w-xs w-xs">
-      <h2 class="text-xl font-semibold mb-4">How it works</h2>
+      <h2 class="text-xl font-semibold mb-4">          
+        <router-link
+            to="/how-to-play"
+            class="text-sm text-gray-600 hover:text-indigo-600 hover:underline"
+          >
+            How to play?
+        </router-link>
+      </h2>
       <img
         size="300x200"
         src="@/assets/rules-illustration.jpeg"
@@ -30,7 +37,11 @@
         Create New Game
       </router-link>
     </div>
+    <!-- Version text (bottom-right) -->
+    <p class="absolute bottom-2 right-4 text-xs text-gray-400">v{{ version }}</p>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const version:string = import.meta.env.VITE_APP_VERSION
+</script>

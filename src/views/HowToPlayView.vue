@@ -1,9 +1,14 @@
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col items-center py-8 px-4">
     <!-- Title -->
-    <h1 class="text-3xl font-bold text-indigo-600 mb-6">How to Play – Stand-up Saboteur</h1>
+    <h1 class="text-3xl font-bold text-indigo-600 mb-6">
+      <router-link to="/" class="hover:underline">Stand-up Saboteur</router-link>
+    </h1>
 
     <div class="bg-white shadow-md rounded-xl p-6 w-full max-w-3xl space-y-6">
+      <section>
+        <h2 class="text-2xl font-semibold text-gray-700 mb-2">❓ How to Play Stand-up Saboteur</h2>
+      </section>
       <!-- Roles -->
       <section>
         <h2 class="text-2xl font-semibold text-gray-700 mb-2">🎭 Roles</h2>
