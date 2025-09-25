@@ -1,28 +1,46 @@
 <template>
   <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">🏆 Final Scores</h1>
+    <header class="p-4 shadow bg-white flex justify-between items-center">
+      <!-- Title -->
+      <h1 class="text-3xl font-bold text-indigo-600">
+        <router-link to="/" class="hover:underline">Standup Saboteur</router-link>
+      </h1>
 
-    <div v-if="loading">Loading...</div>
-    <div v-else-if="noResults" class="text-gray-500">No final scores yet.</div>
-
-    <ul v-else class="space-y-4">
-      <li
-        v-for="(score, index) in scores"
-        :key="score.player.id"
-        class="flex items-center bg-white shadow rounded-lg p-4"
+      <!-- Back Button -->
+      <button
+        @click="$router.back()"
+        class="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg shadow"
       >
-        <span class="text-xl font-bold w-8">{{ index + 1 }}</span>
-        <img
-          class="w-12 h-12 rounded-full border mr-4"
-          :src="`https://api.dicebear.com/9.x/croodles/svg?seed=${score.player.avatarSeed}`"
-          alt="avatar"
-        />
-        <div class="flex-1">
-          <p class="font-semibold">{{ score.player.name }}({{ score.player.funnyName }})</p>
-        </div>
-        <p class="text-lg font-bold">{{ score.totalScore }}</p>
-      </li>
-    </ul>
+        ⬅ Back
+      </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 space-y-6">
+      <h1 class="text-2xl font-bold mb-4">🏆 Final Scores</h1>
+
+      <div v-if="loading">Loading...</div>
+      <div v-else-if="noResults" class="text-gray-500">No final scores yet.</div>
+
+      <ul v-else class="space-y-4">
+        <li
+          v-for="(score, index) in scores"
+          :key="score.player.id"
+          class="flex items-center bg-white shadow rounded-lg p-4"
+        >
+          <span class="text-xl font-bold w-8">{{ index + 1 }}</span>
+          <img
+            class="w-12 h-12 rounded-full border mr-4"
+            :src="`https://api.dicebear.com/9.x/croodles/svg?seed=${score.player.avatarSeed}`"
+            alt="avatar"
+          />
+          <div class="flex-1">
+            <p class="font-semibold">{{ score.player.name }} ({{ score.player.funnyName }})</p>
+          </div>
+          <p class="text-lg font-bold">{{ score.totalScore }}</p>
+        </li>
+      </ul>
+    </main>
   </div>
 </template>
 

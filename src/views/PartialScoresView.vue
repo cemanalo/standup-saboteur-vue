@@ -26,6 +26,28 @@
         <canvas ref="chartCanvas"></canvas>
       </div>
     </main>
+
+    <!-- Footer Nav -->
+    <footer class="bg-white shadow-inner p-3">
+      <nav class="flex justify-around text-sm font-medium">
+        <template v-for="tab in tabs" :key="tab.name">
+          <!-- Render router-link if it's a navigation tab -->
+          <router-link
+            v-if="tab.path"
+            :to="tab.path"
+            class="p-2 hover:text-indigo-600"
+            active-class="text-indigo-600 font-bold"
+          >
+            {{ tab.label }}
+          </router-link>
+
+          <!-- Render button if it's an action tab (e.g., logout) -->
+          <button v-else-if="tab.act" @click="tab.act" class="p-2 hover:text-red-600 text-gray-700">
+            {{ tab.label }}
+          </button>
+        </template>
+      </nav>
+    </footer>
   </div>
 </template>
 
@@ -36,8 +58,9 @@ import api from '@/api'
 import Chart from 'chart.js/auto'
 import type { Game } from '@/types'
 import { sessionCheck } from '@/libs/game/session.check'
+import { tabs as footerTabs } from '@/libs/footer.nav.tabs'
 
-await sessionCheck()
+sessionCheck()
 
 const route = useRoute()
 const roomCode = route.params.roomCode as string
@@ -119,4 +142,6 @@ async function loadGameData() {
     console.error('Failed to fetch game data:', error)
   }
 }
+
+const tabs = footerTabs(roomCode as string)
 </script>

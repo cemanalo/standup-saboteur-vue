@@ -30,3 +30,5 @@ coverage
 *.tsbuildinfo
 .env.*
 .env
+
+droplet_ip.txt

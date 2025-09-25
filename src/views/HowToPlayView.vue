@@ -7,8 +7,17 @@
 
     <div class="bg-white shadow-md rounded-xl p-6 w-full max-w-3xl space-y-6">
       <section>
-        <h2 class="text-2xl font-semibold text-gray-700 mb-2">❓ How to Play Stand-up Saboteur</h2>
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="text-2xl font-semibold text-gray-700">❓ How to Play Stand-up Saboteur</h2>
+          <button
+            @click="goBack"
+            class="px-4 py-1 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg shadow"
+          >
+            ⬅ Back
+          </button>
+        </div>
       </section>
+
       <!-- Roles -->
       <section>
         <h2 class="text-2xl font-semibold text-gray-700 mb-2">🎭 Roles</h2>
