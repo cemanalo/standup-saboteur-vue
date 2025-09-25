@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import api from '@/api'
 import { setToken } from '@/libs/utils/auth'
 import { sessionCheck } from '@/libs/join-game/session.check'
 
 sessionCheck()
 
+const route = useRoute()
 const router = useRouter()
 const roomCode = ref('')
 const name = ref('')
 const pin = ref('')
 const selectedAvatar = ref('')
 const isSubmitting = ref(false)
+
+if (route.params.roomCode) {
+  roomCode.value = route.params.roomCode as string
+}
 
 const emotions = ['Happy', 'Angry', 'Cool', 'Nerdy', 'Sleepy', 'Surprised']
 
