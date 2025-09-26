@@ -7,6 +7,7 @@ import { setToken } from '@/libs/utils/auth'
 const router = useRouter()
 const name = ref('')
 const pin = ref('')
+// const mode = ref('classic') // new: game mode selection
 const selectedAvatar = ref('')
 const isSubmitting = ref(false) // new: to disable UI while creating game
 
@@ -35,6 +36,7 @@ const createGame = async () => {
       ownerName: name.value,
       ownerPin: pin.value,
       avatarSeed: selectedAvatar.value,
+      // mode: mode.value, // new: send selected mode to backend
     })
 
     const { roomCode, id } = response.data
@@ -70,6 +72,18 @@ const createGame = async () => {
   <div class="min-h-screen flex items-center justify-center bg-gray-50">
     <div class="w-full max-w-md bg-white rounded-xl shadow-md p-6 space-y-6">
       <h1 class="text-2xl font-bold text-center">Create New Game</h1>
+
+      <!-- <div>
+        <label class="block text-sm font-medium text-gray-700">Game Mode</label>
+        <select
+          v-model="mode"
+          :disabled="isSubmitting"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:bg-gray-100"
+        >
+          <option value="classic">Classic Mode</option>
+          <option value="timed">10-Minute Mode</option>
+        </select>
+      </div> -->
 
       <div>
         <label class="block text-sm font-medium text-gray-700">Name</label>

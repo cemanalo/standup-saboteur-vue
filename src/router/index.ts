@@ -26,12 +26,7 @@ const router = createRouter({
       component: CreateGameView,
     },
     {
-      path: '/join',
-      name: 'join',
-      component: JoinGameView,
-    },
-    {
-      path: '/join/:roomCode',
+      path: '/join/:roomCode?',
       name: 'join',
       component: JoinGameView,
     },

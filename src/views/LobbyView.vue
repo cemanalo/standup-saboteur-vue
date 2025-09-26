@@ -59,7 +59,7 @@
           <li
             v-for="player in players"
             :key="player.id"
-            class="grid grid-cols-[1fr_auto] items-center p-3 rounded-lg border hover:shadow"
+            class="grid grid-cols-[1fr_auto] items-center p-3 rounded-lg border hover:shadow gap-x-4"
           >
             <div class="flex items-center space-x-3">
               <img
@@ -69,12 +69,23 @@
               />
               <span class="font-medium text-gray-800 text-lg">{{ player.name }}</span>
             </div>
-            <span
-              :class="player.isReady ? 'text-green-600' : 'text-red-500'"
-              class="font-semibold text-md text-right pl-12"
-            >
-              {{ player.isReady ? '✅ Ready' : '❌ Not Ready' }}
-            </span>
+            <div class="flex items-center gap-3">
+              <span
+                :class="player.isReady ? 'text-green-600' : 'text-red-500'"
+                class="font-semibold text-md text-right"
+              >
+                {{ player.isReady ? '✅ Ready' : '❌ Not Ready' }}
+              </span>
+
+              <!-- Kick button (only for owner and not yourself) -->
+              <button
+                v-if="ownerId === playerId && player.id !== playerId"
+                @click="kickPlayer(player.id)"
+                class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+              >
+                Kick
+              </button>
+            </div>
           </li>
         </ul>
       </div>
@@ -146,7 +157,7 @@ onMounted(async () => {
     const currentPlayer = data.find((p) => p.id === playerId)
     isReady.value = currentPlayer ? currentPlayer.isReady : false
 
-    isEveryoneReady.value = data.length > 3 && data.every((p) => p.isReady)
+    isEveryoneReady.value = data.length >= 3 && data.every((p) => p.isReady)
     console.log('Is everyone ready?', isEveryoneReady.value)
   })
 
@@ -154,6 +165,14 @@ onMounted(async () => {
     console.log('Game has started:')
     // Redirect to game dashboard or game view
     router.push(`/game/${roomCode}`)
+  })
+
+  socket.on('playerKicked', ({ playerId }) => {
+    players.value = players.value.filter((p) => p.id !== playerId)
+    if (playerId === localStorage.getItem('playerId')) {
+      toast.error('You were kicked from the game')
+      router.push('/') // redirect kicked player
+    }
   })
 
   getGame()
@@ -205,9 +224,21 @@ async function getGame() {
 }
 
 async function copyRoomLink() {
-  const link = `${import.meta.env.VITE_API_BASE_URL}/join/${roomCode}`
+  const link = `${import.meta.env.VITE_BASE_URL}/join/${roomCode}`
   try {
-    await navigator.clipboard.writeText(link)
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(link)
+    } else {
+      // fallback
+      const textArea = document.createElement('textarea')
+      textArea.value = link
+      textArea.style.position = 'fixed' // avoid scrolling to bottom
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+    }
     toast.success('Room link copied to clipboard!', {
       autoClose: 2000,
       position: toast.POSITION.TOP_CENTER,
@@ -218,6 +249,25 @@ async function copyRoomLink() {
       position: toast.POSITION.TOP_CENTER,
     })
     console.error('Clipboard error:', err)
+  }
+}
+
+async function kickPlayer(targetPlayerId: string) {
+  try {
+    await api.post(`/games/${roomCode}/kick`, {
+      ownerId: playerId,
+      targetPlayerId,
+    })
+    toast.success('Player has been kicked', {
+      autoClose: 2000,
+      position: toast.POSITION.TOP_CENTER,
+    })
+  } catch (err) {
+    toast.error('Failed to kick player', {
+      autoClose: 2000,
+      position: toast.POSITION.TOP_CENTER,
+    })
+    console.error('Kick player error:', err)
   }
 }
 </script>

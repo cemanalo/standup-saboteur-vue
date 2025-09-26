@@ -7,12 +7,20 @@
       </h1>
 
       <!-- Back Button -->
-      <button
-        @click="$router.back()"
-        class="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg shadow"
-      >
-        ⬅ Back
-      </button>
+      <div class="flex gap-3">
+        <button
+          @click="$router.back()"
+          class="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg shadow"
+        >
+          ⬅ Back
+        </button>
+        <button
+          @click="logout()"
+          class="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg shadow"
+        >
+          ⏻ Logout
+        </button>
+      </div>
     </header>
 
     <!-- Main Content -->
@@ -49,6 +57,7 @@ import { ref, onMounted } from 'vue'
 import api from '@/api'
 import { type FinalScore, type Game } from '@/types'
 import { useRoute } from 'vue-router'
+import { logout } from '@/libs/utils/auth'
 
 const route = useRoute()
 const roomCode = route.params.roomCode // Get room code from path

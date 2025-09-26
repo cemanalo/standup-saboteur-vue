@@ -16,7 +16,9 @@ export type Game = {
   id: string
   ownerId: string
   roomCode: string
+  // mode: 'classic' | 'timed'
   status: 'waiting' | 'in_progress' | 'completed'
+  // endTime?: Date
   createdAt: Date
 }
 

@@ -62,7 +62,7 @@ const joinGame = async () => {
       pin: pin.value,
       gameId,
     })
-    const { token } = loginResponse.data
+    const token = loginResponse.data
     setToken(token)
 
     // Redirect to lobby

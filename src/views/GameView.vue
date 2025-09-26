@@ -14,6 +14,9 @@
         <p class="text-lg font-semibold">
           Room Code: <span class="text-indigo-500">{{ roomCode }}</span>
         </p>
+        <!-- <div v-if="gameData && gameData.mode === 'timed'">
+          ⏳ Time Left: {{ formattedTimeLeft }}
+        </div> -->
       </div>
 
       <!-- Current Player Info -->
@@ -146,6 +149,8 @@ const currentPlayer = ref<Player | null>(null)
 const otherPlayers = ref<Player[]>([])
 const pairingRequests = ref<PairingRequest[]>([])
 const tabs = footerTabs(roomCode as string)
+// const timeLeft = ref(0);
+// const formattedTimeLeft = ref('00:00');
 
 sessionCheck()
 
@@ -203,6 +208,8 @@ async function loadPairingRequestsToday() {
  * Can send if the current player has not already sent a request to the target player today.
  * Or if they have not reached their limit of 3 pairings today.
  * Or if they are not already paired.
+ *
+ * if game mode is 'timed', always return true.
  * @param playerId ID of the player to check if a pair request can be sent
  */
 function canSendRequest(playerId: string) {
@@ -211,6 +218,10 @@ function canSendRequest(playerId: string) {
    * 2. Check if current player is already paired with the target player today
    * 3. Check if there is already a pending request to the target player today
    */
+
+  // if (gameData.value?.mode === 'timed') {
+  //   return true
+  // }
 
   console.log('pairingRequests', pairingRequests.value)
 
@@ -343,4 +354,14 @@ function handlePairingRequestResponse(data: {
     })
   }
 }
+
+// function updateTimer() {
+//   if (gameData.value && gameData.value.endTime) {
+//     const diff = new Date(gameData.value.endTime).getTime() - Date.now()
+//     timeLeft.value = Math.max(0, diff)
+//     formattedTimeLeft.value = new Date(timeLeft.value).toISOString().slice(14, 19)
+//   }
+// }
+
+// setInterval(updateTimer, 1000)
 </script>
